@@ -11,14 +11,12 @@ contract FundFundMe is Script {
     function fundFundMe(address mostRecentlyDeployed) public {
         vm.startBroadcast();
         FundMe(payable(mostRecentlyDeployed)).fund{value: SEND_VALUE}();
-        console.log("Funded FundMe contract with %s ether", SEND_VALUE);
+        vm.stopBroadcast();
     }
 
     function run() external {
         address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
-        vm.startBroadcast();
         fundFundMe(mostRecentlyDeployed);
-        vm.stopBroadcast();
     }
 }
 
@@ -31,8 +29,6 @@ contract WithdrawFundMe is Script {
 
     function run() external {
         address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
-        vm.startBroadcast();
         withdrawFundMe(mostRecentlyDeployed);
-        vm.stopBroadcast();
     }
 }
